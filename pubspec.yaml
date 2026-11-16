@@ -1,0 +1,42 @@
+name: device_calendar_kit
+description: >-
+  Read the device calendar from DartNative apps: permission, every calendar
+  from every account on the phone (iCloud, Google, Exchange, CalDAV), and
+  event occurrences in a date range. EventKit on iOS and CalendarContract on
+  Android over FFI, with no platform channels.
+version: 0.1.0
+repository: https://github.com/edkluivert/device_calendar_kit
+topics:
+  - dartnative
+  - calendar
+
+environment:
+  sdk: ^3.11.0
+
+# `dn pub get` resolves dartnative from the installed SDK.
+dependencies:
+  dartnative: ^1.0.0
+  ffi: ^2.1.4
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0
+
+# iOS compiles the Swift in ios/Classes into the app as an FFI plugin.
+# Android registers DeviceCalendarKitPlugin, which loads
+# libdevice_calendar_kit.so so JNI_OnLoad runs before any Dart.
+# The registrant block makes `dn pub get` add the loadSymbols() call to the
+# app's lib/dartnative_plugin_registrant.dart.
+dartnative:
+  plugin:
+    platforms:
+      ios:
+        ffiPlugin: true
+      android:
+        package: com.kluivert.device_calendar_kit
+        pluginClass: DeviceCalendarKitPlugin
+  registrant:
+    imports:
+      - package:device_calendar_kit/device_calendar_kit.dart
+    calls:
+      - DeviceCalendarKitBindings.loadSymbols();

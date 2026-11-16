@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Merged into the app's manifest, so apps need not declare it. -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
+    <application>
+        <!--
+          Invisible proxy that shows the permission dialog and receives its
+          result: the DartNative embedding exposes no permission-result hook
+          to plugins.
+        -->
+        <activity
+            android:name=".DeviceCalendarKitPermissionActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+    </application>
+</manifest>
